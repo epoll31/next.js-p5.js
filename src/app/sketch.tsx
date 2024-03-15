@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useState } from "react";
 import p5Types from "p5"; //Import this for typechecking and intellisense
 import dynamic from 'next/dynamic'
 
@@ -130,6 +130,19 @@ class Boid {
                 count++;
             }
         }
+        let mousePos = p5.createVector(p5.mouseX, p5.mouseY);
+        let d = p5Types.Vector.dist(this.position, mousePos);
+
+        if (d > 0 && d < desiredseparation * 100) {
+            let diff = p5Types.Vector.sub(this.position, mousePos);
+            diff.normalize();
+            diff.div(d);
+
+            diff.mult(100);
+            steer.add(diff);
+            count++;
+        }
+
 
         if (count > 0) {
             steer.div(count);
@@ -190,11 +203,30 @@ class Boid {
     }
 }
 
+
+
 const SketchComponent: React.FC<ComponentProps> = (props: ComponentProps) => {
+    const strings = [
+        "Hi there!",
+        "My name is Ethan Pollack.",
+        "Check out my projects below!",
+    ]
+    const tickRate = 100;
+    const holdTime = 1000;
+    const cursorBlinkRate = 400;
+
+    const [timer, setTimer] = useState(0);
+    const [cursorBlinkTimer, setCursorBlinkTimer] = useState(0);
+    const [currentString, setCurrentString] = useState(0);
+    const [currentChar, setCurrentChar] = useState(0);
+    const [direction, setDirection] = useState(1);
+    const [reachedEnd, setReachedEnd] = useState(false);
+    const [showCursor, setShowCursor] = useState(true);
 
     // See annotations in JS for more information
     const setup = (p5: p5Types, canvasParentRef: Element) => {
-        p5.createCanvas(700, 300).parent(canvasParentRef);
+        p5.createCanvas(700, 200).parent(canvasParentRef);
+        // p5.loadFont("public/JetBrainsMono-Regular.ttf");
 
         flock = new Flock();
         for (let i = 0; i < 100; i++) {
@@ -204,8 +236,53 @@ const SketchComponent: React.FC<ComponentProps> = (props: ComponentProps) => {
     };
 
     const draw = (p5: p5Types) => {
+
+        setTimer(timer + p5.deltaTime);
+        setCursorBlinkTimer(cursorBlinkTimer + p5.deltaTime);
+        if (reachedEnd) {
+            // console.log("reached end: ", timer, holdTime)
+            if (timer > holdTime) {
+                setTimer(0);
+                setReachedEnd(false);
+                setDirection(-1);
+            }
+        }
+        else {
+            // console.log("not reached end: ", timer, tickRate)
+            if (timer > tickRate) {
+                setTimer(0);
+                setCurrentChar(currentChar + direction);
+                if (currentChar > strings[currentString].length) {
+                    setReachedEnd(true);
+                    setCurrentChar(strings[currentString].length);
+                }
+                else if (currentChar < 0) {
+                    setCurrentString((currentString + 1) % strings.length);
+                    setCurrentChar(0);
+                    setDirection(1);
+                }
+            }
+        }
+        if (cursorBlinkTimer > cursorBlinkRate) {
+            setCursorBlinkTimer(0);
+            setShowCursor(!showCursor);
+        }
+
+        // console.log(currentChar, strings[currentString].length, currentString, strings.length);
+        let curr = strings[currentString].substring(0, currentChar);
+        if (showCursor) {
+            curr = curr + "_";
+        }
+
         p5.background(51);
         flock.run(p5);
+
+        p5.textSize(35);
+        p5.textAlign(p5.LEFT, p5.CENTER);
+        p5.textFont("Arial")
+        p5.fill(50, 168, 82);
+        p5.stroke(200);
+        p5.text(curr, 100, p5.height / 2);
     };
 
     return <Sketch setup={setup} draw={draw} />;
