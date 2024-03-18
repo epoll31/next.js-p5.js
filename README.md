@@ -1,8 +1,15 @@
+
+# Next.js p5.js Template
+
+## Using This Template
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+### Running the Server
+
+Use the following command to run the development server.
 
 ```bash
 npm run dev
@@ -16,11 +23,19 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What's in this template?
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+This template consists of a single page. This page has one sketch on it derived from the [flocking example](https://processing.org/examples/flocking.html) on the p5.js website. 
+
+Additionally, I have added a typing animation that you can customize.
+
+This is what the sketch looks like:
+
+[<img src="./sketch.gif" alt="The example sketch as a gif"/>](https://github.com/epoll31)
 
 ## Learn More
+
+### Next.js
 
 To learn more about Next.js, take a look at the following resources:
 
@@ -29,8 +44,15 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+### p5.js
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To learn more about p5.js, take a look at the following resources:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [p5.js Reference](https://p5js.org/reference/) - learn about p5.js using there online reference
+- [p5.js Examples](https://p5js.org/examples/) - official pre-made examples in p5.js
+
+### react-p5
+
+To leard more about react-p5, take a look at the following resources:
+
+- [react-p5 on npm](https://www.npmjs.com/package/react-p5) - the package on the npm website

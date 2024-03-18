@@ -9,10 +9,6 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
     ssr: false,
 })
 
-interface ComponentProps {
-    // Your component props
-}
-
 let flock: Flock;
 
 class Flock {
@@ -45,7 +41,7 @@ class Boid {
         this.acceleration = new p5Types.Vector(0, 0);
         this.velocity = p5Types.Vector.random2D();
         this.position = new p5Types.Vector(x, y);
-        this.r = 3.0;
+        this.r = 5.0;
         this.maxspeed = 3;
         this.maxforce = 0.05;
     }
@@ -203,7 +199,9 @@ class Boid {
     }
 }
 
-
+interface ComponentProps {
+    className?: string;
+}
 
 const SketchComponent: React.FC<ComponentProps> = (props: ComponentProps) => {
     const strings = [
@@ -225,11 +223,11 @@ const SketchComponent: React.FC<ComponentProps> = (props: ComponentProps) => {
 
     // See annotations in JS for more information
     const setup = (p5: p5Types, canvasParentRef: Element) => {
-        p5.createCanvas(700, 200).parent(canvasParentRef);
+        p5.createCanvas(1400, 400).parent(canvasParentRef);
         // p5.loadFont("public/JetBrainsMono-Regular.ttf");
 
         flock = new Flock();
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 400; i++) {
             let b = new Boid(p5.width / 2, p5.height / 2);
             flock.addBoid(b);
         }
@@ -277,15 +275,15 @@ const SketchComponent: React.FC<ComponentProps> = (props: ComponentProps) => {
         p5.background(51);
         flock.run(p5);
 
-        p5.textSize(35);
+        p5.textSize(80);
         p5.textAlign(p5.LEFT, p5.CENTER);
         p5.textFont("Arial")
         p5.fill(50, 168, 82);
         p5.stroke(200);
-        p5.text(curr, 100, p5.height / 2);
+        p5.text(curr, 150, p5.height / 2);
     };
 
-    return <Sketch setup={setup} draw={draw} />;
+    return <Sketch setup={setup} draw={draw} className={props.className} />;
 };
 
 export default SketchComponent;
